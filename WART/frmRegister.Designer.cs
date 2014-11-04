@@ -28,12 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmRegister));
             this.txtPhoneNumber = new System.Windows.Forms.TextBox();
             this.btnCodeRequest = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.grpStep1 = new System.Windows.Forms.GroupBox();
+            this.btnSkip = new System.Windows.Forms.Button();
             this.chkDebug = new System.Windows.Forms.CheckBox();
+            this.btnExist = new System.Windows.Forms.Button();
             this.btnID = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
@@ -43,11 +46,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtOutput = new System.Windows.Forms.TextBox();
             this.grpResult = new System.Windows.Forms.GroupBox();
-            this.btnExist = new System.Windows.Forms.Button();
-            this.btnSkip = new System.Windows.Forms.Button();
+            this.ctmMethod = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mthSMS = new System.Windows.Forms.ToolStripMenuItem();
+            this.mthVoice = new System.Windows.Forms.ToolStripMenuItem();
             this.grpStep1.SuspendLayout();
             this.grpStep2.SuspendLayout();
             this.grpResult.SuspendLayout();
+            this.ctmMethod.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtPhoneNumber
@@ -62,6 +67,7 @@
             // 
             // btnCodeRequest
             // 
+            this.btnCodeRequest.ContextMenuStrip = this.ctmMethod;
             this.btnCodeRequest.Enabled = false;
             this.btnCodeRequest.Location = new System.Drawing.Point(45, 72);
             this.btnCodeRequest.Name = "btnCodeRequest";
@@ -100,6 +106,17 @@
             this.grpStep1.TabStop = false;
             this.grpStep1.Text = "Step 1: Request code";
             // 
+            // btnSkip
+            // 
+            this.btnSkip.Enabled = false;
+            this.btnSkip.Location = new System.Drawing.Point(73, 101);
+            this.btnSkip.Name = "btnSkip";
+            this.btnSkip.Size = new System.Drawing.Size(180, 23);
+            this.btnSkip.TabIndex = 11;
+            this.btnSkip.Text = "I already have a code";
+            this.btnSkip.UseVisualStyleBackColor = true;
+            this.btnSkip.Click += new System.EventHandler(this.btnSkip_Click);
+            // 
             // chkDebug
             // 
             this.chkDebug.AutoSize = true;
@@ -109,6 +126,19 @@
             this.chkDebug.TabIndex = 10;
             this.chkDebug.Text = "Debug";
             this.chkDebug.UseVisualStyleBackColor = true;
+            // 
+            // btnExist
+            // 
+            this.btnExist.Enabled = false;
+            this.btnExist.Location = new System.Drawing.Point(145, 72);
+            this.btnExist.Name = "btnExist";
+            this.btnExist.Size = new System.Drawing.Size(108, 23);
+            this.btnExist.TabIndex = 9;
+            this.btnExist.Text = "Check existing";
+            this.btnExist.UseVisualStyleBackColor = true;
+            this.btnExist.Click += new System.EventHandler(this.btnExist_Click);
+            this.btnExist.MouseEnter += new System.EventHandler(this.onMouseEnter);
+            this.btnExist.MouseLeave += new System.EventHandler(this.onMouseLeave);
             // 
             // btnID
             // 
@@ -206,29 +236,27 @@
             this.grpResult.TabStop = false;
             this.grpResult.Text = "Step 3: Retrieve password";
             // 
-            // btnExist
+            // ctmMethod
             // 
-            this.btnExist.Enabled = false;
-            this.btnExist.Location = new System.Drawing.Point(145, 72);
-            this.btnExist.Name = "btnExist";
-            this.btnExist.Size = new System.Drawing.Size(108, 23);
-            this.btnExist.TabIndex = 9;
-            this.btnExist.Text = "Check existing";
-            this.btnExist.UseVisualStyleBackColor = true;
-            this.btnExist.Click += new System.EventHandler(this.btnExist_Click);
-            this.btnExist.MouseEnter += new System.EventHandler(this.onMouseEnter);
-            this.btnExist.MouseLeave += new System.EventHandler(this.onMouseLeave);
+            this.ctmMethod.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mthSMS,
+            this.mthVoice});
+            this.ctmMethod.Name = "ctmMethod";
+            this.ctmMethod.Size = new System.Drawing.Size(153, 70);
             // 
-            // btnSkip
+            // mthSMS
             // 
-            this.btnSkip.Enabled = false;
-            this.btnSkip.Location = new System.Drawing.Point(73, 101);
-            this.btnSkip.Name = "btnSkip";
-            this.btnSkip.Size = new System.Drawing.Size(180, 23);
-            this.btnSkip.TabIndex = 11;
-            this.btnSkip.Text = "I already have a code";
-            this.btnSkip.UseVisualStyleBackColor = true;
-            this.btnSkip.Click += new System.EventHandler(this.btnSkip_Click);
+            this.mthSMS.Name = "mthSMS";
+            this.mthSMS.Size = new System.Drawing.Size(152, 22);
+            this.mthSMS.Text = "SMS";
+            this.mthSMS.Click += new System.EventHandler(this.mthSMS_Click);
+            // 
+            // mthVoice
+            // 
+            this.mthVoice.Name = "mthVoice";
+            this.mthVoice.Size = new System.Drawing.Size(152, 22);
+            this.mthVoice.Text = "Voice";
+            this.mthVoice.Click += new System.EventHandler(this.mthVoice_Click);
             // 
             // frmRegister
             // 
@@ -248,6 +276,7 @@
             this.grpStep2.PerformLayout();
             this.grpResult.ResumeLayout(false);
             this.grpResult.PerformLayout();
+            this.ctmMethod.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -270,5 +299,8 @@
         private System.Windows.Forms.CheckBox chkDebug;
         private System.Windows.Forms.Button btnExist;
         private System.Windows.Forms.Button btnSkip;
+        private System.Windows.Forms.ContextMenuStrip ctmMethod;
+        private System.Windows.Forms.ToolStripMenuItem mthSMS;
+        private System.Windows.Forms.ToolStripMenuItem mthVoice;
     }
 }

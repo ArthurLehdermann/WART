@@ -22,6 +22,7 @@ namespace WART
         protected string code = string.Empty;
         protected bool raw = false;
         public  string method = "sms";
+        public string forceMethod = string.Empty;
         protected ToolTip tt;
         private string[] WaCertThumbprints = {
                                                  "AC4C5FDEAEDD00406AC33C58BAFD6DE6D2424FEE", 
@@ -79,21 +80,37 @@ namespace WART
             if (this.parseNumber())
             {
                 //try sms
-                this.method = "sms";
+                if (string.IsNullOrEmpty(this.forceMethod))
+                {
+                    this.method = "sms";
+                }
+                else
+                {
+                    this.method = this.forceMethod;
+                }
                 string resp1 = string.Empty;
                 string resp2 = string.Empty;
                 if (!this._requestCode(out resp1))
                 {
-                    //try using voice
-                    this.method = "voice";
-                    if (!this._requestCode(out resp2))
+                    if (!string.IsNullOrEmpty(this.forceMethod))
                     {
-                        this.Notify(string.Format(@"Could not request code using either sms or voice.
+                        this.Notify(string.Format(@"Could not request code using {0}:
+{1}", this.method, resp1));
+                    }
+                    else
+                    {
+                        //try using voice
+                        this.method = "voice";
+                        if (!this._requestCode(out resp2))
+                        {
+                            this.Notify(string.Format(@"Could not request code using either sms or voice.
 SMS:    {0}
 Voice:  {1}", resp1, resp2));
+                        }
                     }
                 }
             }
+            this.forceMethod = string.Empty;
         }
 
         private bool parseNumber()
@@ -591,6 +608,18 @@ Response = {3}", this.code, this.number, this.identity, response));
                 this.grpStep1.Enabled = false;
                 this.grpStep2.Enabled = true;
             }
+        }
+
+        private void mthSMS_Click(object sender, EventArgs e)
+        {
+            this.forceMethod = "sms";
+            this.btnCodeRequest_Click(sender, e);
+        }
+
+        private void mthVoice_Click(object sender, EventArgs e)
+        {
+            this.forceMethod = "voice";
+            this.btnCodeRequest_Click(sender, e);
         }
     }
 }
